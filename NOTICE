@@ -1,0 +1,24 @@
+agent-env-orchestrator
+Copyright 2026 The agent-env-orchestrator Authors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE). That license
+covers only the source code and documentation authored for this repository.
+
+Third-party material is NOT relicensed by this repository and remains under its own terms:
+
+* Container base images. The demo Dockerfiles in images/ build FROM the official
+  "python:3.12-slim" image (Python Software Foundation License for CPython, plus the licenses
+  of the Debian packages it contains). The images are pulled from their registry at build
+  time and are not redistributed here.
+
+* Optional Python dependency. The "parquet" extra installs Apache Arrow (pyarrow), licensed
+  under Apache-2.0. Development tools (pytest, ruff, build, hatchling) keep their own
+  licenses.
+
+* Terraform providers. deploy/terraform uses the hashicorp/kubernetes provider (MPL-2.0),
+  downloaded by "terraform init" and not vendored here.
+
+* Datasets. The MiMo adapter (src/aeo/mimo.py) reads operator-supplied local copies of
+  dataset rows and image mappings. This repository contains no MiMo data or images, and aeo
+  does not download them. Any use of such data or images is subject to their own licenses and
+  terms. The test fixtures in tests/unit/test_mimo.py are synthetic.
