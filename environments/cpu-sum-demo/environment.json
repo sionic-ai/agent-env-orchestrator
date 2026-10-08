@@ -1,0 +1,19 @@
+{
+  "schema_version": "aeo.environment/v1",
+  "id": "cpu-sum-demo",
+  "description": "Synthetic CPU task: sum integers from numbers.txt into answer.txt. Solved by a deterministic fixture agent (not an AI model).",
+  "assets": "assets",
+  "network": "none",
+  "agent": {
+    "image": "aeo-demo-agent:0.1.0",
+    "command": ["python3", "/opt/aeo-agent/fixture_agent.py", "solve"],
+    "timeout_seconds": 60,
+    "resources": {"cpus": 1.0, "memory_mb": 512, "pids": 128}
+  },
+  "verifier": {
+    "image": "aeo-demo-verifier:0.1.0",
+    "command": ["python3", "/opt/aeo-verifier/verify.py"],
+    "timeout_seconds": 30,
+    "resources": {"cpus": 1.0, "memory_mb": 256, "pids": 64}
+  }
+}

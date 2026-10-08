@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-env-orchestrator"
+version = "0.1.0"
+description = "Run isolated, CPU-only agent environments locally with Docker and collect verifier rewards."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.11"
+authors = [{ name = "agent-env-orchestrator contributors" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: POSIX",
+]
+# No runtime dependencies: the Docker backend shells out to the `docker` CLI.
+dependencies = []
+
+[project.optional-dependencies]
+# Only needed to read MiMo rows straight from local Parquet files.
+parquet = ["pyarrow==25.0.1"]
+dev = [
+  "pytest==9.1.1",
+  "ruff==0.16.10",
+  "build==1.6.1",
+]
+
+[project.scripts]
+aeo = "aeo.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aeo"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/aeo", "tests", "README.md", "LICENSE", "NOTICE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers -m 'not docker'"
+markers = [
+  "docker: needs a local Docker daemon and builds the demo images (run with: pytest -m docker)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+ignore = [
+  "S603", # subprocess without shell: argv lists are built and validated by aeo itself
+  "S607", # `docker` is resolved from PATH on purpose
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S108", "S105", "S106"]
+# The fixture agent deliberately probes /tmp exec and file modes inside its sandbox.
+"images/demo-agent/fixture_agent.py" = ["S103", "S108"]

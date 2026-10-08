@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# aeo run output (results stay on the host, never committed)
+runs/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+override.tf
+override.tf.json
+
+# Local data (MiMo rows, mappings, etc. are never committed)
+data/
+*.parquet
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
